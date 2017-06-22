@@ -1,0 +1,65 @@
+{
+  "name": "honeycomb",
+  "description": "",
+  "keywords": [
+    "hemerajs",
+    "micro-services"
+  ],
+  "license": "MIT",
+  "version": "0.1.0",
+  "main": "./service.js",
+  "engines": {
+    "node": "*"
+  },
+  "dependencies": {
+    "bluebird": "^3.4.0",
+    "body-parser": "^1.15.1",
+    "co": "^4.6.0",
+    "dotenv": "^2.0.0",
+    "express": "^4.14.0",
+    "joi": "^10.6.0",
+    "jsonwebtoken": "^7.4.1",
+    "knex": "^0.13.0",
+    "kue": "^0.11.5",
+    "lodash": "^4.17.4",
+    "moment": "^2.14.1",
+    "morgan": "^1.7.0",
+    "multer": "^1.1.0",
+    "nats-hemera": "^0.4.12",
+    "boom": "5.1.0",
+    "hapi": "16.4.3",
+    "hemera-redis-cache": "1.0.21",
+    "hemera-joi": "1.1.4",
+    "hemera-zipkin": "1.0.13",
+    "nats": "0.7.20",
+    "zipkin": "0.7.1",
+    "zipkin-instrumentation-hapi": "0.7.1",
+    "zipkin-transport-http": "0.7.1",
+    "superagent": "^3.3.0",
+    "uuid4": "^1.0.0"
+  },
+  "repository": {
+    "private": true
+  },
+  "scripts": {
+    "start": "BASE_PORT=39999 node base/service.js --log-date-format 'DD-MM HH:mm'",
+    "pre-commit": "lint",
+    "lint": "standard --fix api/**/*.js && standard --fix topic/**/*.js && standard --fix post/**/*.js && standard --fix register/**/*.js && standard --fix base/**/*.js && standard --fix repl/**/*.js && standard --fix storing/**/*.js && standard --fix lib/**/*.js && standard --fix auth/**/*.js && standard --fix signup_sms/**/*.js && standard --fix sms_sender/**/*.js",
+    "test": "LOG_LEVEL=info tape **/test/*.js",
+    "coverage": "istanbul cover ./node_modules/tape/bin/tape  **/test/*.js && open ./coverage/lcov-report/index.html",
+    "coverage-check": "istanbul cover ./node_modules/tape/bin/tape  **/test/*.js && istanbul check-coverage",
+    "commit-check": "standard **/*.js && istanbul cover ./node_modules/tape/bin/tape  **/test/*.js && istanbul check-coverage"
+  },
+  "devDependencies": {
+    "chance": "~1.0.3",
+    "faker": "~3.1.0",
+    "fuge": "~0.8.1",
+    "husky": "~0.11.4",
+    "jshint": "~2.9.2",
+    "pre-commit": "~1.1.1",
+    "standard": "~7.1.2",
+    "supertest": "^3.0.0",
+    "tape": "~4.5.1",
+    "tape-catch": "~1.0.6"
+  }
+}

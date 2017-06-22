@@ -1,0 +1,25 @@
+fuge_global:
+  tail: true
+  monitor: true
+  monitor_excludes:
+    - '**/node_modules/**'
+    - '**/.git/**'
+    - '**/*.log'
+
+cache-service:
+  type: process
+  path: ../cache-service
+  run: 'node index.js'
+
+math-service:
+  type: process
+  path: ../math-service
+  run: 'node index.js'
+
+api:
+  type: process
+  path: ../api
+  run: 'node index.js'
+  ports:
+    - api=8789
+

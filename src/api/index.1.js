@@ -23,8 +23,7 @@ const nats = require('nats').connect({
 
 const server = new Hapi.Server()
 server.connection({
-  port: process.env.API_PORT,
-  host: process.env.API_HOST
+  port: process.env.API_PORT
 })
 
 server.register({

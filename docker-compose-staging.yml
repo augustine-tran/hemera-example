@@ -1,39 +1,6 @@
 version: "2.0"
 
 services:
-
-  fuge:
-    build:
-      context: "./src"
-    volumes:
-      - ./src:/app
-    links:
-      - nats
-      - zipkin
-      - redis
-    depends_on:
-      - nats
-      - redis
-    labels:
-      - "traefik.backend=api"
-      - "traefik.frontend.rule=PathPrefix: /api"
-      - "traefik.port=8789"
-      - "traefik.frontend.entryPoints=http"
-    ports:
-      - 30000:3000
-      - 8789:8789
-    environment:
-      REDIS_PORT: 6379
-      REDIS_URL: redis
-      NATS_URL: nats://nats:4222
-      NATS_USER: ruser
-      NATS_PW: T0pS3cr3t
-      ZIPKIN_URL: zipkin
-      ZIPKIN_PORT: 9411
-      API_PORT: 8789
-      API_HOST: 0.0.0.0
-      HEMERA_LOG_LEVEL: silent
-
   nats:
     build:
       context: "./nats"
@@ -43,6 +10,68 @@ services:
       - "4222:4222"
       - "8222:8222"
     hostname: nats-server
+
+  api:
+    build:
+      context: "./api"
+    depends_on:
+      - nats
+      - zipkin
+    links:
+      - zipkin
+    labels:
+      - "traefik.backend=api"
+      - "traefik.frontend.rule=PathPrefix: /api"
+      - "traefik.port=8789"
+      - "traefik.frontend.entryPoints=http"
+    environment:
+      NATS_URL: nats://nats:4222
+      NATS_USER: ruser
+      NATS_PW: T0pS3cr3t
+      ZIPKIN_URL: zipkin
+      ZIPKIN_PORT: 9411
+      API_PORT: 8789
+      API_HOST: 0.0.0.0
+      HEMERA_LOG_LEVEL: silent
+
+  math-service:
+    build:
+      context: "./math-service"
+    links:
+      - nats
+      - zipkin
+    depends_on:
+      - nats
+      - redis
+    restart: always
+    environment:
+      NATS_URL: nats://nats:4222
+      NATS_USER: ruser
+      NATS_PW: T0pS3cr3t
+      ZIPKIN_URL: zipkin
+      ZIPKIN_PORT: 9411
+      HEMERA_LOG_LEVEL: silent
+
+  cache-service:
+    build:
+      context: "./cache-service"
+    links:
+      - nats
+      - zipkin
+      - redis
+    depends_on:
+      - nats
+      - redis
+    restart: always
+    environment:
+      REDIS_PORT: 6379
+      REDIS_URL: redis
+      NATS_URL: nats://nats:4222
+      NATS_USER: ruser
+      NATS_PW: T0pS3cr3t
+      ZIPKIN_URL: zipkin
+      ZIPKIN_PORT: 9411
+      HEMERA_LOG_LEVEL: info
 
   natsboard:
     build:
