@@ -1,4 +1,4 @@
-FROM node:8.1.2
+FROM node:8.3.0
 
 # Set environment variables
 ENV appDir /app

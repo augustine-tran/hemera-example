@@ -37,7 +37,7 @@ hemera.ready(() => {
     let result
 
     let operation = (a, b) => {
-      return a + b * 2
+      return a + b
     }
 
     // no cache
